@@ -3,14 +3,16 @@ version: '3.8'
 services:
 
   app:
-    image: php:8.2-cli
+    image: webdevops/php-apache:8.4
     container_name: betalentech_app
-    working_dir: /var/www
+    working_dir: /app
     volumes:
-      - ./:/var/www
+      - ./:/app
     ports:
-      - "8000:8000"
-    command: php artisan serve --host=0.0.0.0 --port=8000
+      - "8000:80"
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/public
+    command:
     depends_on:
       - mysql
 
@@ -24,7 +26,7 @@ services:
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -34,7 +36,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      REMOVE_AUTH: "false"
+      REMOVE_AUTH: "true"
 
   gateway2:
     image: matheusprotzen/gateways-mock
@@ -42,7 +44,7 @@ services:
     ports:
       - "3002:3002"
     environment:
-      REMOVE_AUTH: "false"
+      REMOVE_AUTH: "true"
 
 volumes:
   mysql_data:

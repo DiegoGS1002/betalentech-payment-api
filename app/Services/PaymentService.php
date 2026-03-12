@@ -1,16 +1,145 @@
 <?php
 
-namespace App\Gateways;
+namespace App\Services;
 
-use App\Gateways\Contracts\PaymentGatewayInterface;
-use Illuminate\Support\Facades\Http;
+use App\Gateways\Gateway1Service;
+use App\Gateways\Gateway2Service;
+use App\Models\Client;
+use App\Models\Gateway;
+use App\Models\Product;
+use App\Models\Transaction;
+use App\Models\TransactionProduct;
+use Illuminate\Support\Facades\DB;
 
-class Gateway2Service implements PaymentGatewayInterface
+class PaymentService
 {
+    protected array $gatewayMap = [
+        'gateway1' => Gateway1Service::class,
+        'gateway2' => Gateway2Service::class,
+    ];
+
     public function process(array $data): array
     {
-        $response = Http::post('http://gateway2:8080/transacoes', $data);
+        $gateways = Gateway::where('is_active', true)
+            ->orderBy('priority')
+            ->get();
 
-        return $response->json();
+        if ($gateways->isEmpty()) {
+            return ['success' => false, 'message' => 'No active gateways available'];
+        }
+
+        $products = [];
+        $totalAmount = 0;
+
+        foreach ($data['products'] as $item) {
+            $product = Product::findOrFail($item['product_id']);
+            $products[] = [
+                'product' => $product,
+                'quantity' => $item['quantity'],
+            ];
+            $totalAmount += $product->amount * $item['quantity'];
+        }
+
+        $client = Client::firstOrCreate(
+            ['email' => $data['email']],
+            ['name' => $data['name']]
+        );
+
+        $paymentData = [
+            'amount' => $totalAmount,
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'cardNumber' => $data['cardNumber'],
+            'cvv' => $data['cvv'],
+        ];
+
+        $lastError = null;
+
+        foreach ($gateways as $gateway) {
+            $serviceClass = $this->gatewayMap[$gateway->name] ?? null;
+
+            if (!$serviceClass) {
+                continue;
+            }
+
+            try {
+                $service = new $serviceClass();
+                $result = $service->process($paymentData);
+
+                if ($result['success']) {
+                    $transaction = DB::transaction(function () use ($client, $gateway, $result, $totalAmount, $data, $products) {
+                        $externalId = $result['data']['id'] ?? $result['data']['transactionId'] ?? null;
+
+                        $transaction = Transaction::create([
+                            'client_id' => $client->id,
+                            'gateway_id' => $gateway->id,
+                            'external_id' => $externalId,
+                            'status' => 'approved',
+                            'amount' => $totalAmount,
+                            'card_last_numbers' => substr($data['cardNumber'], -4),
+                        ]);
+
+                        foreach ($products as $item) {
+                            TransactionProduct::create([
+                                'transaction_id' => $transaction->id,
+                                'product_id' => $item['product']->id,
+                                'quantity' => $item['quantity'],
+                            ]);
+                        }
+
+                        return $transaction;
+                    });
+
+                    return [
+                        'success' => true,
+                        'transaction_id' => $transaction->id,
+                        'external_id' => $transaction->external_id,
+                        'gateway' => $gateway->name,
+                        'amount' => $totalAmount,
+                        'status' => 'approved',
+                    ];
+                }
+
+                $lastError = $result;
+            } catch (\Exception $e) {
+                $lastError = ['success' => false, 'message' => $e->getMessage()];
+            }
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Payment failed on all gateways',
+            'last_error' => $lastError,
+        ];
+    }
+
+    public function refund(Transaction $transaction): array
+    {
+        $gateway = $transaction->gateway;
+        $serviceClass = $this->gatewayMap[$gateway->name] ?? null;
+
+        if (!$serviceClass) {
+            return ['success' => false, 'message' => 'Gateway service not found'];
+        }
+
+        $service = new $serviceClass();
+
+        try {
+            $result = $service->refund($transaction->external_id);
+
+            if ($result['success']) {
+                $transaction->update(['status' => 'refunded']);
+
+                return [
+                    'success' => true,
+                    'message' => 'Refund processed successfully',
+                    'data' => $result['data'],
+                ];
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
     }
 }

@@ -2,27 +2,41 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\GatewaySeeder;
 
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::firstOrCreate(
+            ['email' => 'admin@betalent.tech'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('password'),
+                'role' => 'admin',
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('password'),
+                'role' => 'user',
+            ]
+        );
+
+        Product::firstOrCreate(['name' => 'Product A'], ['amount' => 1000]);
+        Product::firstOrCreate(['name' => 'Product B'], ['amount' => 2500]);
+        Product::firstOrCreate(['name' => 'Product C'], ['amount' => 5000]);
+
         $this->call([
             GatewaySeeder::class,
-        ]);}
+        ]);
+    }
 }

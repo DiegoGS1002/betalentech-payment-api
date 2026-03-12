@@ -19,21 +19,12 @@ class TransactionProduct extends Model
         'transaction_id',
         'product_id',
         'quantity',
-        'unit_price',
-        'total_price',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
-            'total_price' => 'decimal:2',
         ];
     }
 

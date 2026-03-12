@@ -1,20 +1,18 @@
-version: '3.8'
-
 services:
 
   app:
-    image: webdevops/php-apache:8.4
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: betalentech_app
     working_dir: /app
     volumes:
       - ./:/app
     ports:
       - "8000:80"
-    environment:
-      - WEB_DOCUMENT_ROOT=/app/public
-    command:
     depends_on:
       - mysql
+      - gateway-mock
 
   mysql:
     image: mysql:8
@@ -30,21 +28,12 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  gateway1:
+  gateway-mock:
     image: matheusprotzen/gateways-mock
-    container_name: gateway1
+    container_name: gateway_mock
     ports:
       - "3001:3001"
-    environment:
-      REMOVE_AUTH: "true"
-
-  gateway2:
-    image: matheusprotzen/gateways-mock
-    container_name: gateway2
-    ports:
       - "3002:3002"
-    environment:
-      REMOVE_AUTH: "true"
 
 volumes:
   mysql_data:

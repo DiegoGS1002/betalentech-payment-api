@@ -12,16 +12,14 @@ class GatewaySeeder extends Seeder
      */
     public function run(): void
     {
-        Gateway::create([
-            'name' => 'gateway1',
-            'priority' => 1,
-            'is_active' => true
-        ]);
+        Gateway::firstOrCreate(
+            ['name' => 'gateway1'],
+            ['priority' => 1, 'is_active' => true]
+        );
 
-        Gateway::create([
-            'name' => 'gateway2',
-            'priority' => 2,
-            'is_active' => true
-        ]);
+        Gateway::firstOrCreate(
+            ['name' => 'gateway2'],
+            ['priority' => 2, 'is_active' => true]
+        );
     }
 }

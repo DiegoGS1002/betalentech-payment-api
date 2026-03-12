@@ -17,21 +17,15 @@ class Gateway extends Model
      */
     protected $fillable = [
         'name',
-        'slug',
         'is_active',
-        'config',
+        'priority',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
-            'config' => 'array',
+            'priority' => 'integer',
         ];
     }
 

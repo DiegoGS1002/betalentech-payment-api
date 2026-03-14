@@ -1,6 +1,7 @@
 # BeTalenTech Payment API
 
-API RESTful de processamento de pagamentos construída com **Laravel 12**, com suporte a múltiplos gateways de pagamento, sistema de fallback automático, autenticação via **Sanctum** e controle de acesso baseado em roles.
+API RESTful para **processamento de pagamentos com múltiplos gateways**, desenvolvida com **Laravel 12**.
+A aplicação implementa um **sistema de fallback automático entre gateways**, autenticação via **Laravel Sanctum**, controle de acesso por **roles** e arquitetura preparada para **extensão de novos gateways de pagamento**.
 
 ---
 
@@ -43,7 +44,28 @@ Ou, alternativamente sem Docker:
 - Composer 2.x
 
 ---
+## Sobre o Desafio
 
+Este projeto foi desenvolvido como parte de um desafio técnico da **BeTalentech**.
+
+A implementação contempla **todos os requisitos do Nível 2**, incluindo:
+
+- API RESTful para processamento de pagamentos
+- Integração com múltiplos gateways
+- Sistema de **fallback automático entre gateways**
+- Controle de acesso por **roles**
+- Autenticação baseada em **tokens (Laravel Sanctum)**
+
+Além disso, foram implementados **incrementos inspirados no Nível 3**, visando melhorar a arquitetura e a organização do sistema, como:
+
+- Estrutura baseada em **interfaces para gateways de pagamento**
+- **Service Layer** para orquestração do fluxo de pagamentos
+- Arquitetura preparada para **adição de novos gateways**
+- Sistema de **prioridade dinâmica de gateways**
+- Ambiente completo via **Docker**
+- Script automatizado de **testes da API**
+
+---
 ## Instalação e Execução
 
 ### Com Docker (recomendado)
@@ -128,6 +150,18 @@ php artisan serve
 | `GATEWAY2_URL`        | URL do Gateway 2                    | `http://gateway-mock:3002`                |
 | `GATEWAY2_AUTH_TOKEN`  | Token de autenticação do Gateway 2 | `tk_f2198cc671b5289fa856`                 |
 | `GATEWAY2_AUTH_SECRET` | Secret do Gateway 2                | `3d15e8ed6131446ea7e3456728b1211f`        |
+
+---
+
+## Tecnologias Utilizadas
+
+- **PHP 8.4**
+- **Laravel 12**
+- **MySQL 8**
+- **Docker / Docker Compose**
+- **Laravel Sanctum** (autenticação)
+- **Pest** (testes)
+- **cURL / Bash** para testes manuais da API
 
 ---
 

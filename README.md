@@ -51,7 +51,7 @@ Ou, alternativamente sem Docker:
 1. Clone o repositório:
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/DiegoGS1002/betalentech-payment-api.git
 cd betalentech-payment-api
 ```
 
@@ -87,7 +87,7 @@ http://localhost:8000/api
 1. Clone o repositório e instale as dependências:
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/DiegoGS1002/betalentech-payment-api.git
 cd betalentech-payment-api
 composer install
 ```

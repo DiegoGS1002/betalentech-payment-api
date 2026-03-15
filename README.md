@@ -29,17 +29,18 @@ A aplicação implementa um **sistema de fallback automático entre gateways**, 
 - [Testes](#testes)
 
 ---
+---
 
 ## Requisitos
 
-- **PHP** >= 8.4
+- **PHP** >= 8.2
 - **Composer** >= 2.x
 - **MySQL** >= 8.0
 - **Docker** e **Docker Compose** (recomendado)
 
 Ou, alternativamente sem Docker:
 
-- PHP 8.4 com extensões: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`
+- PHP 8.2 com extensões: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`
 - MySQL 8.0 rodando localmente
 - Composer 2.x
 
@@ -157,10 +158,11 @@ php artisan serve
 | `GATEWAY2_AUTH_SECRET` | Secret do Gateway 2                | `3d15e8ed6131446ea7e3456728b1211f`        |
 
 ---
+---
 
 ## Tecnologias Utilizadas
 
-- **PHP 8.4**
+- **PHP 8.2**
 - **Laravel 12**
 - **MySQL 8**
 - **Docker / Docker Compose**

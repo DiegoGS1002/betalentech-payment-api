@@ -80,7 +80,6 @@ cd betalentech-payment-api
 
 ```bash
 cp .env.example .env
-php artisan key:generate
 ```
 
 3. Suba os containers:

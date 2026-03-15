@@ -29,7 +29,6 @@ A aplicação implementa um **sistema de fallback automático entre gateways**, 
 - [Testes](#testes)
 
 ---
----
 
 ## Requisitos
 
@@ -157,7 +156,6 @@ php artisan serve
 | `GATEWAY2_AUTH_TOKEN`  | Token de autenticação do Gateway 2 | `tk_f2198cc671b5289fa856`                 |
 | `GATEWAY2_AUTH_SECRET` | Secret do Gateway 2                | `3d15e8ed6131446ea7e3456728b1211f`        |
 
----
 ---
 
 ## Tecnologias Utilizadas

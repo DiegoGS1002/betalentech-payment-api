@@ -16,14 +16,22 @@ class GatewayController extends Controller
     {
         $gateway->update(['is_active' => true]);
 
-        return response()->json(['message' => 'Gateway activated', 'gateway' => $gateway]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Gateway ativado com sucesso',
+            'gateway' => $gateway,
+        ]);
     }
 
     public function deactivate(Gateway $gateway)
     {
         $gateway->update(['is_active' => false]);
 
-        return response()->json(['message' => 'Gateway deactivated', 'gateway' => $gateway]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Gateway desativado com sucesso',
+            'gateway' => $gateway,
+        ]);
     }
 
     public function updatePriority(Request $request, Gateway $gateway)
@@ -34,6 +42,10 @@ class GatewayController extends Controller
 
         $gateway->update(['priority' => $validated['priority']]);
 
-        return response()->json(['message' => 'Priority updated', 'gateway' => $gateway]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Prioridade atualizada com sucesso',
+            'gateway' => $gateway,
+        ]);
     }
 }

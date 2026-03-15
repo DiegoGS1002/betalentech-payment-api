@@ -25,7 +25,11 @@ class PaymentService
             ->get();
 
         if ($gateways->isEmpty()) {
-            return ['success' => false, 'message' => 'No active gateways available'];
+            return [
+                'success' => false,
+                'message' => 'Nenhum gateway ativo disponível',
+                'error' => 'Não há gateways de pagamento ativos no momento. Por favor, tente novamente mais tarde.',
+            ];
         }
 
         $products = [];
@@ -92,6 +96,7 @@ class PaymentService
 
                     return [
                         'success' => true,
+                        'message' => 'Pagamento realizado com sucesso',
                         'transaction_id' => $transaction->id,
                         'external_id' => $transaction->external_id,
                         'gateway' => $gateway->name,
@@ -108,7 +113,8 @@ class PaymentService
 
         return [
             'success' => false,
-            'message' => 'Payment failed on all gateways',
+            'message' => 'Falha no pagamento',
+            'error' => 'O pagamento falhou em todos os gateways disponíveis.',
             'last_error' => $lastError,
         ];
     }
@@ -119,7 +125,11 @@ class PaymentService
         $serviceClass = $this->gatewayMap[$gateway->name] ?? null;
 
         if (!$serviceClass) {
-            return ['success' => false, 'message' => 'Gateway service not found'];
+            return [
+                'success' => false,
+                'message' => 'Gateway não encontrado',
+                'error' => 'O serviço do gateway não foi encontrado.',
+            ];
         }
 
         $service = new $serviceClass();
@@ -132,14 +142,18 @@ class PaymentService
 
                 return [
                     'success' => true,
-                    'message' => 'Refund processed successfully',
+                    'message' => 'Reembolso processado com sucesso',
                     'data' => $result['data'],
                 ];
             }
 
             return $result;
         } catch (\Exception $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
+            return [
+                'success' => false,
+                'message' => 'Erro ao processar reembolso',
+                'error' => $e->getMessage(),
+            ];
         }
     }
 }

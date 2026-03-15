@@ -319,7 +319,7 @@ describe('Payment Failures', function () {
         $response->assertStatus(422)
             ->assertJson([
                 'success' => false,
-                'message' => 'No active gateways available'
+                'message' => 'Nenhum gateway ativo disponível'
             ]);
     });
 
@@ -341,7 +341,7 @@ describe('Payment Failures', function () {
         $response->assertStatus(422)
             ->assertJson([
                 'success' => false,
-                'message' => 'Payment failed on all gateways'
+                'message' => 'Falha no pagamento'
             ]);
 
         // No transaction should be created

@@ -163,7 +163,7 @@ describe('Gateway Fallback', function () {
         $response->assertStatus(422)
             ->assertJson([
                 'success' => false,
-                'message' => 'Payment failed on all gateways',
+                'message' => 'Falha no pagamento',
             ])
             ->assertJsonStructure(['last_error']);
     });

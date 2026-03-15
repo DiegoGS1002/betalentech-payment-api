@@ -24,7 +24,11 @@ class TransactionController extends Controller
     public function refund(Transaction $transaction, PaymentService $paymentService)
     {
         if ($transaction->status === 'refunded') {
-            return response()->json(['message' => 'Transaction already refunded'], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Transação já reembolsada',
+                'error' => 'Esta transação já foi reembolsada anteriormente.',
+            ], 422);
         }
 
         $result = $paymentService->refund($transaction);

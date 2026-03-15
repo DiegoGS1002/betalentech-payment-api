@@ -87,7 +87,7 @@ describe('Logout', function () {
             ->postJson('/api/logout');
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Logged out successfully']);
+            ->assertJson(['message' => 'Logout realizado com sucesso']);
 
         // Token should be invalidated
         $this->assertDatabaseMissing('personal_access_tokens', [

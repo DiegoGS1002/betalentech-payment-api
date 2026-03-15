@@ -76,8 +76,14 @@ Além disso, foram implementados **incrementos inspirados no Nível 3**, visando
 git clone https://github.com/DiegoGS1002/betalentech-payment-api.git
 cd betalentech-payment-api
 ```
+2. Configure o arquivo `.env`:
 
-2. Suba os containers:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+3. Suba os containers:
 
 ```bash
 docker-compose up -d --build
@@ -98,7 +104,7 @@ O entrypoint do container executa automaticamente:
 - `php artisan migrate --force`
 - `php artisan db:seed --force`
 
-3. A API estará disponível em:
+4. A API estará disponível em:
 
 ```
 http://localhost:8000/api

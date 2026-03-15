@@ -41,7 +41,7 @@ describe('Gateway Management (Admin Only)', function () {
             ->patchJson('/api/gateways/1/activate');
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Gateway activated']);
+            ->assertJson(['message' => 'Gateway ativado com sucesso']);
 
         expect(Gateway::find(1)->is_active)->toBeTrue();
     });
@@ -53,7 +53,7 @@ describe('Gateway Management (Admin Only)', function () {
             ->patchJson('/api/gateways/1/deactivate');
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Gateway deactivated']);
+            ->assertJson(['message' => 'Gateway desativado com sucesso']);
 
         expect(Gateway::find(1)->is_active)->toBeFalse();
     });
@@ -65,7 +65,7 @@ describe('Gateway Management (Admin Only)', function () {
             ->patchJson('/api/gateways/1/priority', ['priority' => 5]);
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Priority updated']);
+            ->assertJson(['message' => 'Prioridade atualizada com sucesso']);
 
         expect(Gateway::find(1)->priority)->toBe(5);
     });
@@ -158,7 +158,7 @@ describe('User CRUD (Admin and Manager)', function () {
             ->deleteJson("/api/users/{$userId}");
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'User deleted']);
+            ->assertJson(['message' => 'Usuário deletado com sucesso']);
 
         $this->assertDatabaseMissing('users', ['id' => $userId]);
     });
@@ -256,7 +256,7 @@ describe('Product CRUD (Admin, Manager, Finance)', function () {
             ->deleteJson('/api/products/1');
 
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Product deleted']);
+            ->assertJson(['message' => 'Produto deletado com sucesso']);
     });
 
     it('manager can create product', function () {

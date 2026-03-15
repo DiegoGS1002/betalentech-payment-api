@@ -64,7 +64,7 @@ describe('Gateway Activation', function () {
 
         $response->assertStatus(200)
             ->assertJson([
-                'message' => 'Gateway activated',
+                'message' => 'Gateway ativado com sucesso',
                 'gateway' => [
                     'id' => 2,
                     'is_active' => true,
@@ -82,7 +82,7 @@ describe('Gateway Activation', function () {
 
         $response->assertStatus(200)
             ->assertJson([
-                'message' => 'Gateway deactivated',
+                'message' => 'Gateway desativado com sucesso',
                 'gateway' => [
                     'id' => 1,
                     'is_active' => false,
@@ -111,7 +111,7 @@ describe('Gateway Priority', function () {
 
         $response->assertStatus(200)
             ->assertJson([
-                'message' => 'Priority updated',
+                'message' => 'Prioridade atualizada com sucesso',
                 'gateway' => [
                     'id' => 1,
                     'priority' => 10,

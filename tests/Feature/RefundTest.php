@@ -162,7 +162,7 @@ describe('Refund Processing', function () {
             ->postJson("/api/transactions/{$transaction->id}/refund");
 
         $response->assertStatus(422)
-            ->assertJson(['message' => 'Transaction already refunded']);
+            ->assertJson(['message' => 'Transação já reembolsada']);
     });
 
     it('refunds transaction via gateway1', function () {
@@ -192,7 +192,7 @@ describe('Refund Processing', function () {
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Refund processed successfully',
+                'message' => 'Reembolso processado com sucesso',
             ]);
 
         Http::assertSent(function ($request) {
@@ -226,7 +226,7 @@ describe('Refund Processing', function () {
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Refund processed successfully',
+                'message' => 'Reembolso processado com sucesso',
             ]);
 
         Http::assertSent(function ($request) {
